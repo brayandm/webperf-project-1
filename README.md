@@ -11,16 +11,6 @@ Your job is to take the existing website and make it load faster, both for first
 3. Run `npm run dev` to run the dev server.
 4. Open [http://localhost:4000](http://localhost:4000) in your browser and start profiling its performance.
 
-## Practice session
-
-1. Split up into 5 groups (4 on-site + 1 remote).
-2. Get the project running and start profiling it.
-3. Write down all of the issues you can find. You should only look at issues related to the material we’ve covered this week.
-4. After some time (eg 45 minutes), the groups will take turns reporting possible performance improvements to the teacher, one at a time.
-5. The teacher will judge each improvement as either a “requirement”, “extra challenge” or a “non-issue”.
-6. At the end of this, all of you will have a list of requirements and extra challenges.
-7. For the rest of the practice session and until the deadline on next Thursday, you should work on this list.
-
 ## How to work?
 
 Your goal is to create an optimised “production build” of this website. You can partially automate this with scripts, or do everything manually:
