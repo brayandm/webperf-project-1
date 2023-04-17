@@ -13,6 +13,12 @@ export default async function staticHandler(req, res) {
   // Might be useful later.
   // const fileExtension = extname(filePath)
 
+  const isAsset = filePath && filePath.match(/\.(css|js|woff|woff2|ttf|eot|svg|png|jpg|jpeg|gif|webp)$/);
+  
+  if (isAsset) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+  }
+
   // Check if the file exists.
   if (filePath) {
     // Found!
