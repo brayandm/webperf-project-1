@@ -23,7 +23,7 @@ export default async function staticHandler(req, res) {
   }
   
   if (isAsset) {
-    res.setHeader('Cache-Control', 'public, max-age=0'); // 1 year
+    res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
   }
 
   // Check if the file exists.
