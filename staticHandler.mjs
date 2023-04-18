@@ -1,4 +1,5 @@
 import { createReadStream } from 'fs'
+import { createGzip } from 'zlib'
 import mime from 'mime-types'
 
 import { cleanPath } from './utils.mjs'
@@ -32,8 +33,16 @@ export default async function staticHandler(req, res) {
     // Here you can set headers like Cache-Control, etc.
     res.setHeader('Content-Type', mime.lookup(filePath) || undefined)
 
-    // Stream the file to the response.
-    createReadStream(filePath).pipe(res)
+    // Check if the client supports gzip compression.
+    const acceptEncoding = req.headers['accept-encoding'] || ''
+    if (acceptEncoding.includes('gzip')) {
+      // Compress the response using gzip.
+      res.setHeader('Content-Encoding', 'gzip')
+      createReadStream(filePath).pipe(createGzip()).pipe(res)
+    } else {
+      // Stream the file to the response without compression.
+      createReadStream(filePath).pipe(res)
+    }
   } else {
     // Oh no, file does not exist.
     res.statusCode = 404
