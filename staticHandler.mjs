@@ -38,6 +38,16 @@ export default async function staticHandler(req, res) {
     res.setHeader('ETag', etag)
     res.setHeader('Last-Modified', stat.mtime.toUTCString())
 
+    // Check if the client has a cached version of the file.
+    const ifNoneMatch = req.headers['if-none-match']
+    const ifModifiedSince = req.headers['if-modified-since']
+    if (ifNoneMatch === etag || ifModifiedSince === stat.mtime.toUTCString()) {
+      // The client has a cached version of the file.
+      res.statusCode = 304
+      res.end()
+      return
+    }
+
     // Found!
     res.statusCode = 200
 
