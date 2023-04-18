@@ -1,6 +1,7 @@
 import { createReadStream } from 'fs'
 import { createGzip } from 'zlib'
 import mime from 'mime-types'
+import { promises } from 'fs'
 
 import { cleanPath } from './utils.mjs'
 
@@ -22,11 +23,21 @@ export default async function staticHandler(req, res) {
   }
   
   if (isAsset) {
-    res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+    res.setHeader('Cache-Control', 'public, max-age=0'); // 1 year
   }
 
   // Check if the file exists.
   if (filePath) {
+    // Get the file's metadata.
+    const stat = await promises.stat(filePath)
+
+    // Generate a unique ETag value based on the file's contents.
+    const etag = `W/"${stat.size.toString(16)}-${stat.mtime.getTime().toString(16)}"`
+
+    // Set the ETag and Last-Modified headers.
+    res.setHeader('ETag', etag)
+    res.setHeader('Last-Modified', stat.mtime.toUTCString())
+
     // Found!
     res.statusCode = 200
 
