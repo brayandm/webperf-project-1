@@ -1,10 +1,14 @@
-import { createServer } from 'http'
 import staticHandler from './staticHandler.mjs'
+import { readFileSync } from 'fs';
+import { createSecureServer } from 'http2';
 
-const server = createServer((req, res) => {
-  staticHandler(req, res)
-})
+const http2Server = createSecureServer({
+  key: readFileSync('key.pem'),
+  cert: readFileSync('cert.pem'),
+}, (req, res) => {
+  staticHandler(req, res);
+});
 
-server.listen(4000, () => {
-  console.log('Server running at http://localhost:4000/')
-})
+http2Server.listen(4000, () => {
+  console.log('HTTP/2 server running at https://localhost:4000/');
+});
